@@ -1,65 +1,470 @@
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zack Zanni | TF2</title>
+
+<title>Comandos | Zack Zanni TF2</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+    --red: #b83225;
+    --red-hover: #e04430;
+    --dark: #171717;
+    --panel: #222222;
+    --panel-light: #2d2d2d;
+    --border: #484848;
+    --text: #eeeeee;
+    --muted: #a6a6a6;
+    --gold: #e5b34b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background: #181818;
-    color: white;
-    font-family: Arial, sans-serif;
+    background-color: var(--dark);
+    background-image:
+        linear-gradient(rgba(15,15,15,.93), rgba(15,15,15,.96)),
+        repeating-linear-gradient(
+            45deg,
+            #252525 0px,
+            #252525 2px,
+            #1b1b1b 2px,
+            #1b1b1b 8px
+        );
+    color: var(--text);
+    font-family: 'Roboto', sans-serif;
+}
+
+/* HEADER */
+
+.header {
+    background: linear-gradient(180deg, #303030, #1b1b1b);
+    border-bottom: 4px solid var(--red);
+    padding: 35px 20px 28px;
     text-align: center;
-    padding: 40px;
+    box-shadow: 0 5px 20px #0008;
 }
-h1 { color: #e84926; }
-h2 { color: #dddddd; }
-.menu {
-    background: #292929;
-    border: 2px solid #e84926;
-    border-radius: 8px;
-    padding: 20px;
-    max-width: 500px;
-    margin: auto;
-}
-button {
-    background: #e84926;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    margin: 8px;
-    cursor: pointer;
+
+.header-label {
+    color: var(--gold);
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 13px;
     font-weight: bold;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
 }
-button:hover { background: #aa3018; }
+
+.header h1 {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: clamp(30px, 5vw, 55px);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1.1;
+    text-shadow: 3px 3px 0 #000;
+}
+
+.header h1 span {
+    color: var(--red);
+}
+
+.header-subtitle {
+    margin-top: 14px;
+    color: #c6c6c6;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    background: #111;
+    border: 1px solid #444;
+    padding: 7px 14px;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #ddd;
+    text-transform: uppercase;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #7eae54;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #7eae5480;
+}
+
+/* MAIN */
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 35px 20px 50px;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.section-heading .bar {
+    width: 5px;
+    height: 27px;
+    background: var(--red);
+}
+
+.section-heading h2 {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.section-heading p {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* COMMAND GRID */
+
+.commands {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.command {
+    background: linear-gradient(145deg, #292929, #202020);
+    border: 1px solid #414141;
+    border-left: 4px solid var(--red);
+    padding: 18px 20px;
+    transition: .2s ease;
+    position: relative;
+}
+
+.command:hover {
+    background: #303030;
+    border-color: #656565;
+    border-left-color: var(--red-hover);
+    transform: translateY(-2px);
+}
+
+.command-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.command-name {
+    color: #f0c15a;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 23px;
+    letter-spacing: .5px;
+}
+
+.command-type {
+    color: #888;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.command p {
+    color: #c6c6c6;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.example {
+    display: inline-block;
+    margin-top: 12px;
+    background: #141414;
+    border: 1px solid #393939;
+    padding: 6px 10px;
+    color: #a8c878;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+/* NOTICE */
+
+.notice {
+    margin-top: 30px;
+    padding: 20px;
+    background: #292319;
+    border: 1px solid #68532b;
+    border-left: 4px solid var(--gold);
+}
+
+.notice h3 {
+    font-family: 'Roboto Condensed', sans-serif;
+    color: var(--gold);
+    font-size: 18px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.notice p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #d0c7b4;
+}
+
+/* FOOTER */
+
+.footer {
+    border-top: 1px solid #393939;
+    background: #111;
+    padding: 25px 20px;
+    text-align: center;
+}
+
+.footer h3 {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.footer h3 span {
+    color: var(--red);
+}
+
+.footer p {
+    color: #777;
+    font-size: 12px;
+    margin-top: 9px;
+}
+
+.footer .copyright {
+    margin-top: 20px;
+    font-size: 10px;
+    color: #555;
+    letter-spacing: 1px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 650px) {
+    .commands {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        padding: 28px 15px;
+    }
+
+    .section-heading p {
+        display: none;
+    }
+
+    .container {
+        padding: 25px 13px 35px;
+    }
+
+    .command {
+        padding: 16px;
+    }
+}
 </style>
 </head>
 
 <body>
 
-<div class="menu">
-<h1>🔥 ZACK ZANNI</h1>
-<h2>TEAM FORTRESS 2</h2>
-<p>Bem-vindo ao nosso servidor!</p>
+<header class="header">
 
-<h3>📜 COMANDOS DISPONÍVEIS</h3>
+    <div class="header-label">Team Fortress 2 • Community Server</div>
 
-<button onclick="mostrar('!help')">HELP</button>
-<button onclick="mostrar('!discord')">DISCORD</button>
-<button onclick="mostrar('!rules')">REGRAS</button>
+    <h1>COMANDOS DO <span>ZACK ZANNI</span></h1>
 
-<p id="resultado"></p>
-</div>
+    <div class="header-subtitle">
+        SERVIDOR OFICIAL • CASUAL • 4FUN • BRASIL
+    </div>
 
-<script>
-function mostrar(comando) {
-    document.getElementById("resultado").innerText =
-    "Comando: " + comando;
-}
-</script>
+    <div class="status">
+        <span class="status-dot"></span>
+        MANUAL DE COMANDOS DO SERVIDOR
+    </div>
+
+</header>
+
+<main class="container">
+
+    <div class="section-heading">
+        <div class="bar"></div>
+        <h2>Lista de comandos</h2>
+        <p>GUIA DO JOGADOR</p>
+    </div>
+
+    <div class="commands">
+
+        <div class="command">
+            <div class="command-top">
+                <span class="command-name">!tp</span>
+                <span class="command-type">Câmera</span>
+            </div>
+            <p>Ativa o modo de terceira pessoa, permitindo visualizar seu personagem de diferentes ângulos durante a partida.</p>
+            <span class="example">!tp</span>
+        </div>
+
+        <div class="command">
+            <div class="command-top">
+                <span class="command-name">!fp</span>
+                <span class="command-type">Câmera</span>
+            </div>
+            <p>Retorna a câmera para a primeira pessoa, restaurando a visão padrão de jogo.</p>
+            <span class="example">!fp</span>
+        </div>
+
+        <div class="command">
+            <div class="command-top">
+                <span class="command-name">!bhop</span>
+                <span class="command-type">Movimentação</span>
+            </div>
+            <p>Ativa o Bunnyhop, permitindo encadear saltos para se movimentar pelo mapa com mais velocidade. Digite o comando novamente para desativar.</p>
+            <span class="example">!bhop</span>
+        </div>
+
+        <div class="command">
+            <div class="command-top">
+                <span class="command-name">!pad</span>
+                <span class="command-type">Teleportes especiais</span>
+            </div>
+            <p>Abre o menu de Engineer Pads, com teleportes e melhorias especiais de movimentação. Explore as opções de impulso de velocidade e salto. Para o teleporte giratório, gire uma única vez antes de posicioná-lo.</p>
+            <span class="example">!pad</span>
+        </div>
+
+        <div class="command">
+            <div class="command-top">
+                <span class="command-name">!duel</span>
+                <span class="command-type">Combate</span>
+            </div>
+            <p>Desafie um jogador do time inimigo para um duelo e prove quem é o verdadeiro mercenário da partida.</p>
+            <span class="example">!duel NomeDoJogador</span>
+        </div>
+
+        <div class="command">
+            <div class="command-top">
+                <span class="command-name">!abort</span>
+                <span class="command-type">Combate</span>
+            </div>
+            <p>Cancela um duelo que está em andamento. Use caso queira encerrar o confronto antes que ele termine.</p>
+            <span class="example">!abort</span>
+        </div>
+
+        <div class="command">
+            <div class="command-top">
+                <span class="command-name">!rtv</span>
+                <span class="command-type">Mapas</span>
+            </div>
+            <p>Rock The Vote! Inicie uma votação para trocar o mapa atual e acelerar a escolha da próxima arena.</p>
+            <span class="example">!rtv</span>
+        </div>
+
+        <div class="command">
+            <div class="command-top">
+                <span class="command-name">!robot</span>
+                <span class="command-type">Transformação</span>
+            </div>
+            <p>Transforma você em um robô do Mann vs. Machine correspondente à classe que está utilizando.</p>
+            <span class="example">!robot</span>
+        </div>
+
+        <div class="command">
+            <div class="command-top">
+                <span class="command-name">!zombie</span>
+                <span class="command-type">Transformação</span>
+            </div>
+            <p>Transforma seu mercenário em um zumbi temático, com aparência baseada na classe equipada.</p>
+            <span class="example">!zombie</span>
+        </div>
+
+        <div class="command">
+            <div class="command-top">
+                <span class="command-name">!fashion</span>
+                <span class="command-type">Cosméticos</span>
+            </div>
+            <p>Acesse combinações de loadouts com cosméticos estilosos e personalizados para seu mercenário.</p>
+            <span class="example">!fashion</span>
+        </div>
+
+        <div class="command">
+            <div class="command-top">
+                <span class="command-name">!rtd</span>
+                <span class="command-type">Sorte / Diversão</span>
+            </div>
+            <p>Roll The Dice! Jogue os dados e teste sua sorte com um efeito aleatório. Você nunca sabe o que vai acontecer!</p>
+            <span class="example">!rtd</span>
+        </div>
+
+        <div class="command">
+            <div class="command-top">
+                <span class="command-name">!taunt</span>
+                <span class="command-type">Provocação</span>
+            </div>
+            <p>Abre o menu de provocações para escolher uma taunt e comemorar, provocar ou simplesmente se divertir.</p>
+            <span class="example">!taunt</span>
+        </div>
+
+        <div class="command">
+            <div class="command-top">
+                <span class="command-name">!ks</span>
+                <span class="command-type">Killstreak</span>
+            </div>
+            <p>Define a quantidade de Killstreak exibida na sua arma. Escolha um número entre 0 e 100 para personalizar seu contador.</p>
+            <span class="example">!ks 45</span>
+        </div>
+
+        <div class="command">
+            <div class="command-top">
+                <span class="command-name">!nextmap</span>
+                <span class="command-type">Mapas</span>
+            </div>
+            <p>Confira qual mapa foi escolhido pela votação e está programado para ser o próximo do servidor.</p>
+            <span class="example">!nextmap</span>
+        </div>
+
+    </div>
+
+    <div class="notice">
+        <h3>⚠️ Atenção, mercenário!</h3>
+        <p>Os comandos são destinados à diversão e às funcionalidades personalizadas do servidor. Algumas funções podem possuir restrições dependendo da situação da partida. Respeite os outros jogadores, divirta-se e aproveite o caos!</p>
+    </div>
+
+</main>
+
+<footer class="footer">
+
+    <h3>🔥 ZACK <span>ZANNI</span></h3>
+
+    <p>Team Fortress 2 • Casual • 4Fun • Brasil</p>
+
+    <div class="copyright">
+        FAN-MADE COMMUNITY SERVER • NÃO OFICIAL DA VALVE
+    </div>
+
+</footer>
 
 </body>
 </html>
-
