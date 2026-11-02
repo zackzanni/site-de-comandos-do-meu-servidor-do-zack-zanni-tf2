@@ -2,17 +2,64 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Zack Zanni | TF2 Help</title>
-</head>
-<body style="background:#181818;color:white;text-align:center;font-family:Arial">
-    <h1>🔥 ZACK ZANNI</h1>
-    <h2>Servidor Team Fortress 2</h2>
-    <p>Bem-vindo ao nosso servidor!</p>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zack Zanni | TF2</title>
 
-    <h3>📜 Comandos disponíveis</h3>
-    <p>!help — Exibe este menu</p>
-    <p>!discord — Nosso Discord</p>
-    <p>!rules — Regras do servidor</p>
+<style>
+body {
+    background: #181818;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 40px;
+}
+h1 { color: #e84926; }
+h2 { color: #dddddd; }
+.menu {
+    background: #292929;
+    border: 2px solid #e84926;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 500px;
+    margin: auto;
+}
+button {
+    background: #e84926;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    margin: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+button:hover { background: #aa3018; }
+</style>
+</head>
+
+<body>
+
+<div class="menu">
+<h1>🔥 ZACK ZANNI</h1>
+<h2>TEAM FORTRESS 2</h2>
+<p>Bem-vindo ao nosso servidor!</p>
+
+<h3>📜 COMANDOS DISPONÍVEIS</h3>
+
+<button onclick="mostrar('!help')">HELP</button>
+<button onclick="mostrar('!discord')">DISCORD</button>
+<button onclick="mostrar('!rules')">REGRAS</button>
+
+<p id="resultado"></p>
+</div>
+
+<script>
+function mostrar(comando) {
+    document.getElementById("resultado").innerText =
+    "Comando: " + comando;
+}
+</script>
+
 </body>
 </html>
+
