@@ -1,25 +1,53 @@
-
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#171512">
+<meta name="description" content="Manual oficial de comandos do servidor comunitário Zack Zanni de Team Fortress 2.">
+<title>ZACK ZANNI // FIELD MANUAL</title>
 
-<title>Comandos | Zack Zanni TF2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto+Condensed:wght@400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&family=Roboto:wght@400;500;700&display=swap');
+/* =========================================================
+   ZACK ZANNI — MERCENARY FIELD MANUAL
+   Design System / TF2 Industrial Interface
+========================================================= */
 
 :root {
+    color-scheme: dark;
+
     --red: #b83225;
-    --red-hover: #e04430;
-    --dark: #171717;
-    --panel: #222222;
-    --panel-light: #2d2d2d;
-    --border: #484848;
-    --text: #eeeeee;
-    --muted: #a6a6a6;
-    --gold: #e5b34b;
+    --red-light: #ef5942;
+    --red-dark: #541b17;
+    --red-glow: rgba(184, 50, 37, .18);
+
+    --blu: #3978a8;
+    --gold: #e6b94d;
+    --gold-light: #f5d47d;
+
+    --bg: #11100e;
+    --bg-deep: #0b0b09;
+    --panel: #1b1915;
+    --panel-2: #23211c;
+    --panel-3: #2b2822;
+
+    --border: #423b30;
+    --border-light: #5c4d36;
+
+    --text: #eee5d5;
+    --text-soft: #c0b5a3;
+    --muted: #8d8271;
+
+    --title: "Oswald", sans-serif;
+    --body: "Roboto Condensed", sans-serif;
+    --stamp: "Special Elite", monospace;
+
+    --ease: cubic-bezier(.2,.75,.25,1);
 }
 
 * {
@@ -28,263 +56,871 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+    scrollbar-color: #695334 #11100e;
+    scrollbar-width: thin;
+}
+
 body {
-    background-color: var(--dark);
-    background-image:
-        linear-gradient(rgba(15,15,15,.93), rgba(15,15,15,.96)),
-        repeating-linear-gradient(
-            45deg,
-            #252525 0px,
-            #252525 2px,
-            #1b1b1b 2px,
-            #1b1b1b 8px
-        );
+    min-height: 100vh;
+    overflow-x: hidden;
+    background:
+        radial-gradient(ellipse at 50% -10%, #3c2d20 0%, transparent 52%),
+        var(--bg);
     color: var(--text);
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--body);
+    -webkit-font-smoothing: antialiased;
 }
 
-/* HEADER */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    opacity: .035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
 
-.header {
-    background: linear-gradient(180deg, #303030, #1b1b1b);
-    border-bottom: 4px solid var(--red);
-    padding: 35px 20px 28px;
+::selection {
+    background: var(--red);
+    color: white;
+}
+
+button, input {
+    font: inherit;
+}
+
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.container {
+    width: min(1160px, 91%);
+    margin-inline: auto;
+}
+
+/* ── STATUS BAR ─────────────────────────────────────────── */
+
+.topbar {
+    position: relative;
+    z-index: 2;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4.5%;
+    background: var(--bg-deep);
+    border-bottom: 1px solid #302b23;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.6px;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-light {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #94bd59;
+    box-shadow: 0 0 9px #94bd5980;
+    animation: statusPulse 2.5s infinite;
+}
+
+@keyframes statusPulse {
+    50% { opacity: .45; }
+}
+
+.topbar-right {
+    color: #b6a27e;
+    font-family: var(--title);
+    letter-spacing: 2px;
+}
+
+/* ── HERO ──────────────────────────────────────────────── */
+
+.hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 92px 20px 78px;
     text-align: center;
-    box-shadow: 0 5px 20px #0008;
+    background:
+        linear-gradient(115deg, transparent 49.8%, #ffffff04 50%, transparent 50.2%),
+        linear-gradient(180deg, #171512, #241c15 72%, #171512);
+    border-bottom: 1px solid #5b432c;
 }
 
-.header-label {
-    color: var(--gold);
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 13px;
-    font-weight: bold;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 12px;
+.hero::before {
+    content: "MANN CO.";
+    position: absolute;
+    top: -45px;
+    left: -65px;
+    z-index: -1;
+    color: white;
+    opacity: .025;
+    font: 700 clamp(150px, 25vw, 340px)/1 var(--title);
+    letter-spacing: -12px;
+    white-space: nowrap;
+    transform: rotate(-8deg);
 }
 
-.header h1 {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: clamp(30px, 5vw, 55px);
-    font-weight: 900;
-    text-transform: uppercase;
-    line-height: 1.1;
-    text-shadow: 3px 3px 0 #000;
-}
-
-.header h1 span {
+.hero::after {
+    content: "TF2";
+    position: absolute;
+    right: -35px;
+    bottom: -100px;
+    z-index: -1;
     color: var(--red);
+    opacity: .045;
+    font: 700 260px/1 var(--title);
+    transform: rotate(-10deg);
 }
 
-.header-subtitle {
-    margin-top: 14px;
-    color: #c6c6c6;
+.hero-content {
+    position: relative;
+    max-width: 900px;
+    margin: auto;
+    animation: heroReveal .8s var(--ease) both;
+}
+
+@keyframes heroReveal {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 15px;
+    background: #2b2117;
+    border: 1px solid #68502c;
+    color: var(--gold);
+    font: 600 11px var(--title);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.hero-label::before {
+    content: "★";
     font-size: 14px;
+}
+
+.hero h1 {
+    margin-top: 29px;
+    color: #f2e7d4;
+    font: 700 clamp(54px, 9vw, 108px)/.92 var(--title);
+    text-transform: uppercase;
+    text-shadow: 4px 4px 0 #000, 8px 8px 0 #0005;
+}
+
+.hero h1 .highlight {
+    display: block;
+    margin-top: 8px;
+    color: var(--red-light);
+    text-shadow: 4px 4px 0 #000, 0 0 35px #b8322520;
+}
+
+.hero-description {
+    max-width: 590px;
+    margin: 26px auto 0;
+    color: #a79b89;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.hero-description strong {
+    color: #e3c77e;
+}
+
+.hero-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 30px;
+}
+
+.hero-tag {
+    padding: 7px 13px;
+    background: #191714;
+    border: 1px solid #50483b;
+    color: #c2b49a;
+    font: 600 11px var(--title);
     letter-spacing: 1.5px;
 }
 
-.status {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 20px;
-    background: #111;
-    border: 1px solid #444;
-    padding: 7px 14px;
-    font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    color: #ddd;
-    text-transform: uppercase;
+/* ── RED / GOLD / BLU STRIPE ─────────────────────────── */
+
+.team-stripe {
+    display: flex;
+    height: 5px;
+    box-shadow: 0 3px 15px #0008;
 }
 
-.status-dot {
-    width: 8px;
-    height: 8px;
-    background: #7eae54;
-    border-radius: 50%;
-    box-shadow: 0 0 8px #7eae5480;
+.team-stripe .red {
+    flex: 1;
+    background: var(--red);
 }
 
-/* MAIN */
-
-.container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 35px 20px 50px;
+.team-stripe .gold {
+    width: 85px;
+    background: var(--gold);
 }
+
+.team-stripe .blu {
+    flex: 1;
+    background: var(--blu);
+}
+
+/* ── MAIN CONTENT ─────────────────────────────────────── */
+
+.main {
+    padding: 64px 0 90px;
+}
+
+/* ── SECTION HEADER ──────────────────────────────────── */
 
 .section-heading {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 22px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
+    gap: 16px;
+    margin-bottom: 30px;
 }
 
-.section-heading .bar {
-    width: 5px;
-    height: 27px;
+.heading-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
     background: var(--red);
+    border: 2px solid #7c241d;
+    color: white;
+    font: 700 23px var(--title);
+    box-shadow: 3px 3px 0 #000;
 }
 
-.section-heading h2 {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 24px;
-    font-weight: 900;
+.heading-text h2 {
+    font: 700 32px/.95 var(--title);
     text-transform: uppercase;
 }
 
-.section-heading p {
-    margin-left: auto;
+.heading-text p {
+    margin-top: 7px;
     color: var(--muted);
-    font-size: 12px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
-/* COMMAND GRID */
+.heading-number {
+    margin-left: auto;
+    color: #88734f;
+    font: 700 28px var(--title);
+    white-space: nowrap;
+}
+
+/* ── SEARCH ──────────────────────────────────────────── */
+
+.search-area {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.search-box {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 17px;
+    transform: translateY(-50%);
+    color: var(--gold);
+    font-size: 22px;
+    pointer-events: none;
+}
+
+.search-box input {
+    width: 100%;
+    height: 54px;
+    padding: 0 18px 0 49px;
+    background: #151412;
+    border: 1px solid #484136;
+    color: var(--text);
+    font-size: 15px;
+    transition: border-color .25s, box-shadow .25s, background .25s;
+}
+
+.search-box input::placeholder {
+    color: #716b60;
+}
+
+.search-box input:focus {
+    background: #1b1915;
+    border-color: var(--gold-dark);
+    box-shadow: 0 0 0 3px #e6b94d12, 0 5px 20px #0002;
+}
+
+.search-key {
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    background: #211e19;
+    border: 1px solid #484136;
+    color: #9c8c6d;
+    font: 12px monospace;
+    white-space: nowrap;
+}
+
+/* ── FILTERS ────────────────────────────────────────── */
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 30px;
+}
+
+.filter {
+    position: relative;
+    padding: 9px 16px;
+    overflow: hidden;
+    background: #191815;
+    border: 1px solid #3c382f;
+    color: #968b79;
+    font: 600 12px var(--title);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color .2s, background .2s, border-color .2s, transform .2s;
+}
+
+.filter:hover {
+    color: #e4d4b5;
+    border-color: #75613e;
+    transform: translateY(-1px);
+}
+
+.filter.active {
+    background: var(--red-dark);
+    border-color: var(--red);
+    color: #ffdbcb;
+    box-shadow: inset 3px 0 0 var(--red-light);
+}
+
+/* ── COMMAND GRID ───────────────────────────────────── */
 
 .commands {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    gap: 15px;
 }
 
 .command {
-    background: linear-gradient(145deg, #292929, #202020);
-    border: 1px solid #414141;
-    border-left: 4px solid var(--red);
-    padding: 18px 20px;
-    transition: .2s ease;
+    --accent: var(--red);
+
     position: relative;
+    min-width: 0;
+    overflow: hidden;
+    padding: 23px;
+    background:
+        linear-gradient(135deg, #292722 0%, #1b1a18 75%);
+    border: 1px solid #464034;
+    box-shadow: 3px 4px 0 #080808;
+    transition:
+        transform .25s var(--ease),
+        border-color .25s,
+        background .25s,
+        box-shadow .25s;
+    animation: cardReveal .4s var(--ease) both;
+}
+
+.command:nth-child(3n + 2) { animation-delay: .04s; }
+.command:nth-child(3n + 3) { animation-delay: .08s; }
+
+@keyframes cardReveal {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.command::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--accent);
+    opacity: .55;
+    transition: opacity .2s, width .2s;
+}
+
+.command::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, transparent 50%, #ffffff04 50%);
+    pointer-events: none;
 }
 
 .command:hover {
-    background: #303030;
-    border-color: #656565;
-    border-left-color: var(--red-hover);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    border-color: #78613d;
+    background: linear-gradient(135deg, #343027, #211f1b);
+    box-shadow: 3px 8px 0 #080808, 0 0 25px #0002;
+}
+
+.command:hover::before {
+    width: 4px;
+    opacity: 1;
 }
 
 .command-top {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
+    gap: 13px;
+}
+
+.command-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 43px;
+    height: 43px;
+    background: #151412;
+    border: 1px solid #5a4d36;
+    color: var(--gold);
+    font: 700 21px var(--title);
+    box-shadow: 2px 2px 0 #000;
+    transition: transform .25s var(--ease), color .25s;
+}
+
+.command:hover .command-icon {
+    transform: rotate(-4deg) scale(1.04);
+    color: var(--gold-light);
+}
+
+.command-title {
+    min-width: 0;
 }
 
 .command-name {
-    color: #f0c15a;
-    font-family: 'Roboto Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 23px;
-    letter-spacing: .5px;
+    color: #f0c45b;
+    font: 700 28px/1.1 var(--title);
+    text-shadow: 2px 2px #000;
 }
 
-.command-type {
-    color: #888;
+.command-category {
+    margin-top: 4px;
+    color: #938775;
     font-size: 10px;
-    font-weight: bold;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.command-index {
+    align-self: flex-start;
+    margin-left: auto;
+    color: #554a3b;
+    font: 700 13px var(--title);
+}
+
+.command-description {
+    min-height: 50px;
+    margin-top: 19px;
+    color: #bdb4a5;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.command-description strong {
+    color: #e6c875;
+}
+
+.command-bottom {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 18px;
+    padding-top: 13px;
+    border-top: 1px solid #39352d;
+}
+
+.command-prompt {
+    color: #766b5a;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.command-code {
+    padding: 6px 11px;
+    background: #11110f;
+    border: 1px solid #403a30;
+    color: #a9c977;
+    font: 12px monospace;
+    user-select: all;
+}
+
+.copy-btn {
+    margin-left: auto;
+    padding: 7px 11px;
+    background: #29251d;
+    border: 1px solid #55472e;
+    color: #b8a47a;
+    font: 700 10px var(--title);
     letter-spacing: 1px;
     text-transform: uppercase;
+    cursor: pointer;
+    transition: .2s;
 }
 
-.command p {
-    color: #c6c6c6;
-    font-size: 14px;
-    line-height: 1.65;
+.copy-btn:hover {
+    background: #49381e;
+    color: #f3d17b;
+    border-color: var(--gold-dark);
 }
 
-.example {
-    display: inline-block;
-    margin-top: 12px;
-    background: #141414;
-    border: 1px solid #393939;
-    padding: 6px 10px;
-    color: #a8c878;
-    font-family: monospace;
-    font-size: 12px;
+.copy-btn.copied {
+    background: #28331d;
+    border-color: #657d3c;
+    color: #b7d783;
 }
 
-/* NOTICE */
+/* ── EMPTY STATE ────────────────────────────────────── */
 
-.notice {
-    margin-top: 30px;
-    padding: 20px;
-    background: #292319;
-    border: 1px solid #68532b;
-    border-left: 4px solid var(--gold);
-}
-
-.notice h3 {
-    font-family: 'Roboto Condensed', sans-serif;
-    color: var(--gold);
-    font-size: 18px;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-}
-
-.notice p {
-    font-size: 13px;
-    line-height: 1.7;
-    color: #d0c7b4;
-}
-
-/* FOOTER */
-
-.footer {
-    border-top: 1px solid #393939;
-    background: #111;
-    padding: 25px 20px;
+.no-results {
+    display: none;
+    grid-column: 1 / -1;
+    padding: 48px 20px;
+    background: #1b1916;
+    border: 1px dashed #514536;
     text-align: center;
 }
 
-.footer h3 {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 18px;
-    font-weight: 900;
-    letter-spacing: 2px;
+.no-results h3 {
+    color: var(--gold);
+    font: 700 24px var(--title);
+    text-transform: uppercase;
 }
 
-.footer h3 span {
-    color: var(--red);
-}
-
-.footer p {
-    color: #777;
-    font-size: 12px;
+.no-results p {
     margin-top: 9px;
+    color: var(--muted);
 }
 
-.footer .copyright {
-    margin-top: 20px;
-    font-size: 10px;
-    color: #555;
+/* ── INTEL PANEL ───────────────────────────────────── */
+
+.intel {
+    position: relative;
+    margin-top: 48px;
+    overflow: hidden;
+    background: #211d17;
+    border: 1px solid #6a512e;
+    box-shadow: 4px 5px 0 #080808;
+}
+
+.intel-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    background: #40301d;
+    border-bottom: 1px solid #6a512e;
+}
+
+.intel-symbol {
+    color: var(--gold);
+    font-size: 18px;
+}
+
+.intel-header h3 {
+    color: #efd28a;
+    font: 700 17px var(--title);
     letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
-/* RESPONSIVE */
+.intel-label {
+    margin-left: auto;
+    color: #9d8151;
+    font: 10px monospace;
+}
 
-@media (max-width: 650px) {
+.intel-body {
+    padding: 23px;
+    color: #c6b89f;
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.intel-body strong {
+    color: #ead18d;
+}
+
+.intel-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 23px 21px;
+}
+
+.intel-tag {
+    padding: 5px 9px;
+    background: #171512;
+    border: 1px solid #48402f;
+    color: #928064;
+    font-size: 10px;
+    letter letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* ── FOOTER ────────────────────────────────────────── */
+
+.footer {
+    position: relative;
+    overflow: hidden;
+    padding: 48px 20px 27px;
+    background: #0c0c0b;
+    border-top: 4px solid #3b3025;
+    text-align: center;
+}
+
+.footer-title {
+    color: #eee5d5;
+    font: 700 42px/1 var(--title);
+    text-transform: uppercase;
+    text-shadow: 3px 3px 0 #000;
+}
+
+.footer-title span {
+    color: var(--red-light);
+}
+
+.footer-subtitle {
+    margin-top: 13px;
+    color: #8b7c64;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+}
+
+.footer-divider {
+    width: 65px;
+    height: 3px;
+    margin: 23px auto;
+    background: var(--gold);
+}
+
+.footer-disclaimer {
+    color: #514a3d;
+    font-size: 10px;
+    line-height: 1.9;
+    letter letter-spacing: 1px;
+}
+
+/* ── BACK TO TOP ───────────────────────────────────── */
+
+.back-top {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    background: #211d17;
+    border: 1px solid #68502c;
+    color: var(--gold);
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity .25s, visibility .25s, transform .25s, background .2s;
+}
+
+.back-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-top:hover {
+    background: var(--red-dark);
+    border-color: var(--red);
+}
+
+/* ── RESPONSIVE ────────────────────────────────────── */
+
+@media (max-width: 760px) {
     .commands {
         grid-template-columns: 1fr;
     }
 
-    .header {
-        padding: 28px 15px;
+    .hero {
+        padding: 63px 18px 50px;
     }
 
-    .section-heading p {
-        display: none;
+    .hero h1 {
+        font-size: clamp(46px, 12vw, 80px);
     }
 
-    .container {
-        padding: 25px 13px 35px;
+    .main {
+        padding-top: 40px;
+    }
+
+    .heading-number {
+        font-size: 23px;
+    }
+
+    .command-description {
+        min-height: 0;
+    }
+
+    .topbar {
+        padding: 0 4%;
+        font-size: 9px;
+    }
+}
+
+@media (max-width: 480px) {
+    .topbar-right {
+        font-size: 10px;
+    }
+
+    .hero-label {
+        font-size: 9px;
+        letter letter-spacing: 1.5px;
+    }
+
+    .hero-tags {
+        gap: 5px;
+    }
+
+    .hero-tag {
+        padding: 6px 9px;
+        font-size: 9px;
+    }
+
+    .section-heading {
+        gap: 10px;
+    }
+
+    .heading-text h2 {
+        font-size: 25px;
+    }
+
+    .heading-text p {
+        font-size: 9px;
+        letter letter-spacing: 1px;
+    }
+
+    .heading-icon {
+        width: 39px;
+        height: 39px;
+    }
+
+    .heading-number {
+        font-size: 18px;
+    }
+
+    .search-area {
+        gap: 7px;
+    }
+
+    .search-box input {
+        font-size: 13px;
+    }
+
+    .search-key {
+        padding: 0 8px;
+        font-size: 10px;
+    }
+
+    .filter {
+        padding: 8px 11px;
+        font-size: 11px;
     }
 
     .command {
-        padding: 16px;
+        padding: 18px;
+    }
+
+    .command-name {
+        font-size: 25px;
+    }
+
+    .command-category {
+        font-size: 9px;
+        letter letter-spacing: 1px;
+    }
+
+    .command-code {
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+
+    .intel-header {
+        gap: 8px;
+        padding: 13px;
+    }
+
+    .intel-header h3 {
+        font-size: 14px;
+    }
+
+    .intel-label {
+        font-size: 8px;
+    }
+
+    .intel-body {
+        padding: 18px;
+    }
+
+    .back-top {
+        right: 15px;
+        bottom: 15px;
+    }
+}
+
+/* ── ACCESSIBILITY: REDUCED MOTION ─────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
     }
 }
 </style>
@@ -292,179 +928,559 @@ body {
 
 <body>
 
-<header class="header">
-
-    <div class="header-label">Team Fortress 2 • Community Server</div>
-
-    <h1>COMANDOS DO <span>ZACK ZANNI</span></h1>
-
-    <div class="header-subtitle">
-        SERVIDOR OFICIAL • CASUAL • 4FUN • BRASIL
+<!-- STATUS BAR -->
+<div class="topbar">
+    <div class="topbar-left">
+        <span class="status-light" aria-hidden="true"></span>
+        <span>MANN CO. NETWORK // FIELD DATABASE</span>
     </div>
+    <div class="topbar-right">EST. 1968</div>
+</div>
 
-    <div class="status">
-        <span class="status-dot"></span>
-        MANUAL DE COMANDOS DO SERVIDOR
+<!-- HERO -->
+<header class="hero">
+    <div class="hero-content">
+        <div class="hero-label">Mercenary Information Terminal</div>
+
+        <h1>
+            Zack Zanni
+            <span class="highlight">Field Manual</span>
+        </h1>
+
+        <p class="hero-description">
+            Bem-vindo ao campo de batalha, mercenário.
+            Consulte o <strong>arsenal de comandos</strong> disponíveis
+            no servidor e prepare-se para uma experiência
+            <strong>Casual • 4Fun</strong> como nenhuma outra.
+        </p>
+
+        <div class="hero-tags">
+            <span class="hero-tag">◈ Official Community Server</span>
+            <span class="hero-tag">◈ Team Fortress 2</span>
+            <span class="hero-tag">◈ Brasil</span>
+        </div>
     </div>
-
 </header>
 
-<main class="container">
+<div class="team-stripe" aria-hidden="true">
+    <div class="red"></div>
+    <div class="gold"></div>
+    <div class="blu"></div>
+</div>
+
+<!-- MAIN -->
+<main class="main container">
 
     <div class="section-heading">
-        <div class="bar"></div>
-        <h2>Lista de comandos</h2>
-        <p>GUIA DO JOGADOR</p>
+        <div class="heading-icon" aria-hidden="true">⌘</div>
+
+        <div class="heading-text">
+            <h2>Command Arsenal</h2>
+            <p>Manual de operações do mercenário</p>
+        </div>
+
+        <div class="heading-number" id="commandCount" aria-live="polite">14 / 14</div>
     </div>
 
-    <div class="commands">
-
-        <div class="command">
-            <div class="command-top">
-                <span class="command-name">!tp</span>
-                <span class="command-type">Câmera</span>
-            </div>
-            <p>Ativa o modo de terceira pessoa, permitindo visualizar seu personagem de diferentes ângulos durante a partida.</p>
-            <span class="example">!tp</span>
+    <!-- SEARCH -->
+    <div class="search-area">
+        <div class="search-box">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input
+                type="search"
+                id="commandSearch"
+                placeholder="Pesquisar comando, função ou categoria..."
+                autocomplete="off"
+                aria-label="Pesquisar comandos"
+            >
         </div>
+        <div class="search-key" aria-hidden="true">CTRL + F</div>
+    </div>
 
-        <div class="command">
-            <div class="command-top">
-                <span class="command-name">!fp</span>
-                <span class="command-type">Câmera</span>
-            </div>
-            <p>Retorna a câmera para a primeira pessoa, restaurando a visão padrão de jogo.</p>
-            <span class="example">!fp</span>
-        </div>
+    <!-- FILTERS -->
+    <div class="filters" role="group" aria-label="Filtrar comandos por categoria">
+        <button class="filter active" data-filter="all" aria-pressed="true">Todos</button>
+        <button class="filter" data-filter="camera" aria-pressed="false">Câmera</button>
+        <button class="filter" data-filter="movement" aria-pressed="false">Movimentação</button>
+        <button class="filter" data-filter="combat" aria-pressed="false">Combate</button>
+        <button class="filter" data-filter="maps" aria-pressed="false">Mapas</button>
+        <button class="filter" data-filter="fun" aria-pressed="false">Diversão</button>
+        <button class="filter" data-filter="cosmetics" aria-pressed="false">Cosméticos</button>
+    </div>
 
-        <div class="command">
-            <div class="command-top">
-                <span class="command-name">!bhop</span>
-                <span class="command-type">Movimentação</span>
-            </div>
-            <p>Ativa o Bunnyhop, permitindo encadear saltos para se movimentar pelo mapa com mais velocidade. Digite o comando novamente para desativar.</p>
-            <span class="example">!bhop</span>
-        </div>
+    <!-- COMMANDS -->
+    <div class="commands" id="commandsGrid">
 
-        <div class="command">
+        <article class="command" data-category="camera" data-search="tp terceira pessoa câmera camera visão">
             <div class="command-top">
-                <span class="command-name">!pad</span>
-                <span class="command-type">Teleportes especiais</span>
+                <div class="command-icon" aria-hidden="true">◉</div>
+                <div class="command-title">
+                    <div class="command-name">!tp</div>
+                    <div class="command-category">Câmera • Third Person</div>
+                </div>
+                <div class="command-index">01</div>
             </div>
-            <p>Abre o menu de Engineer Pads, com teleportes e melhorias especiais de movimentação. Explore as opções de impulso de velocidade e salto. Para o teleporte giratório, gire uma única vez antes de posicioná-lo.</p>
-            <span class="example">!pad</span>
-        </div>
+            <p class="command-description">
+                Ative a visão em <strong>terceira pessoa</strong> e observe seu mercenário por outro ângulo. Explore o mapa e admire seu loadout.
+            </p>
+            <div class="command-bottom">
+                <span class="command-prompt">Comando</span>
+                <code class="command-code">!tp</code>
+                <button class="copy-btn" data-copy="!tp">⧉ Copiar</button>
+            </div>
+        </article>
 
-        <div class="command">
+        <article class="command" data-category="camera" data-search="fp primeira pessoa câmera camera visão">
             <div class="command-top">
-                <span class="command-name">!duel</span>
-                <span class="command-type">Combate</span>
+                <div class="command-icon" aria-hidden="true">◎</div>
+                <div class="command-title">
+                    <div class="command-name">!fp</div>
+                    <div class="command-category">Câmera • First Person</div>
+                </div>
+                <div class="command-index">02</div>
             </div>
-            <p>Desafie um jogador do time inimigo para um duelo e prove quem é o verdadeiro mercenário da partida.</p>
-            <span class="example">!duel NomeDoJogador</span>
-        </div>
+            <p class="command-description">
+                Retorne à visão clássica em <strong>primeira pessoa</strong>. De volta à perspectiva padrão para encarar o combate.
+            </p>
+            <div class="command-bottom">
+                <span class="command-prompt">Comando</span>
+                <code class="command-code">!fp</code>
+                <button class="copy-btn" data-copy="!fp">⧉ Copiar</button>
+            </div>
+        </article>
 
-        <div class="command">
+        <article class="command" data-category="movement" data-search="bhop bunnyhop bunny hop saltos movimentação">
             <div class="command-top">
-                <span class="command-name">!abort</span>
-                <span class="command-type">Combate</span>
+                <div class="command-icon" aria-hidden="true">↟</div>
+                <div class="command-title">
+                    <div class="command-name">!bhop</div>
+                    <div class="command-category">Movement • Bunnyhop</div>
+                </div>
+                <div class="command-index">03</div>
             </div>
-            <p>Cancela um duelo que está em andamento. Use caso queira encerrar o confronto antes que ele termine.</p>
-            <span class="example">!abort</span>
-        </div>
+            <p class="command-description">
+                Ative o <strong>Bunnyhop</strong> e encadeie saltos para se movimentar de uma maneira diferente. Digite novamente para desativar.
+            </p>
+            <div class="command-bottom">
+                <span class="command-prompt">Comando</span>
+                <code class="command-code">!bhop</code>
+                <button class="copy-btn" data-copy="!bhop">⧉ Copiar</button>
+            </div>
+        </article>
 
-        <div class="command">
+        <article class="command" data-category="movement" data-search="pad engineer pads teleport teleporte velocidade jump boost impulso">
             <div class="command-top">
-                <span class="command-name">!rtv</span>
-                <span class="command-type">Mapas</span>
+                <div class="command-icon" aria-hidden="true">➤</div>
+                <div class="command-title">
+                    <div class="command-name">!pad</div>
+                    <div class="command-category">Engineer • Special Pads</div>
+                </div>
+                <div class="command-index">04</div>
             </div>
-            <p>Rock The Vote! Inicie uma votação para trocar o mapa atual e acelerar a escolha da próxima arena.</p>
-            <span class="example">!rtv</span>
-        </div>
+            <p class="command-description">
+                Acesse o menu de <strong>Engineer Pads</strong> e experimente teleportes especiais, impulsos de velocidade e salto. No teleporte giratório, gire uma vez antes de posicioná-lo.
+            </p>
+            <div class="command-bottom">
+                <span class="command-prompt">Comando</span>
+                <code class="command-code">!pad</code>
+                <button class="copy-btn" data-copy="!pad">⧉ Copiar</button>
+            </div>
+        </article>
 
-        <div class="command">
+        <article class="command" data-category="combat" data-search="duel duelo desafiar inimigo combate arena">
             <div class="command-top">
-                <span class="command-name">!robot</span>
-                <span class="command-type">Transformação</span>
+                <div class="command-icon" aria-hidden="true">⚔</div>
+                <div class="command-title">
+                    <div class="command-name">!duel</div>
+                    <div class="command-category">Combat • Challenge</div>
+                </div>
+                <div class="command-index">05</div>
             </div>
-            <p>Transforma você em um robô do Mann vs. Machine correspondente à classe que está utilizando.</p>
-            <span class="example">!robot</span>
-        </div>
+            <p class="command-description">
+                Desafie um mercenário do <strong>time inimigo</strong> para um duelo. Resolva suas rivalidades e prove quem domina o campo de batalha.
+            </p>
+            <div class="command-bottom">
+                <span class="command-prompt">Exemplo</span>
+                <code class="command-code">!duel Nome</code>
+                <button class="copy-btn" data-copy="!duel ">⧉ Copiar</button>
+            </div>
+        </article>
 
-        <div class="command">
+        <article class="command" data-category="combat" data-search="abort cancelar encerrar duelo desistir combate">
             <div class="command-top">
-                <span class="command-name">!zombie</span>
-                <span class="command-type">Transformação</span>
+                <div class="command-icon" aria-hidden="true">✕</div>
+                <div class="command-title">
+                    <div class="command-name">!abort</div>
+                    <div class="command-category">Combat • Retreat</div>
+                </div>
+                <div class="command-index">06</div>
             </div>
-            <p>Transforma seu mercenário em um zumbi temático, com aparência baseada na classe equipada.</p>
-            <span class="example">!zombie</span>
-        </div>
+            <p class="command-description">
+                Cancele um <strong>duelo em andamento</strong>. Até os mercenários mais casca-grossa precisam apertar o botão de retirada.
+            </p>
+            <div class="command-bottom">
+                <span class="command-prompt">Comando</span>
+                <code class="command-code">!abort</code>
+                <button class="copy-btn" data-copy="!abort">⧉ Copiar</button>
+            </div>
+        </article>
 
-        <div class="command">
+        <article class="command" data-category="maps" data-search="rtv rock the vote votação mapa trocar">
             <div class="command-top">
-                <span class="command-name">!fashion</span>
-                <span class="command-type">Cosméticos</span>
+                <div class="command-icon" aria-hidden="true">⚑</div>
+                <div class="command-title">
+                    <div class="command-name">!rtv</div>
+                    <div class="command-category">Map Control • Vote</div>
+                </div>
+                <div class="command-index">07</div>
             </div>
-            <p>Acesse combinações de loadouts com cosméticos estilosos e personalizados para seu mercenário.</p>
-            <span class="example">!fashion</span>
-        </div>
+            <p class="command-description">
+                Cansado do mapa atual? Inicie uma votação para escolher a próxima arena com o clássico <strong>Rock The Vote</strong>.
+            </p>
+            <div class="command-bottom">
+                <span class="command-prompt">Comando</span>
+                <code class="command-code">!rtv</code>
+                <button class="copy-btn" data-copy="!rtv">⧉ Copiar</button>
+            </div>
+        </article>
 
-        <div class="command">
+        <article class="command" data-category="fun" data-search="robot robô robo mann vs machine mvm máquina maquina transformação">
             <div class="command-top">
-                <span class="command-name">!rtd</span>
-                <span class="command-type">Sorte / Diversão</span>
+                <div class="command-icon" aria-hidden="true">▣</div>
+                <div class="command-title">
+                    <div class="command-name">!robot</div>
+                    <div class="command-category">Mann vs. Machine</div>
+                </div>
+                <div class="command-index">08</div>
             </div>
-            <p>Roll The Dice! Jogue os dados e teste sua sorte com um efeito aleatório. Você nunca sabe o que vai acontecer!</p>
-            <span class="example">!rtd</span>
-        </div>
+            <p class="command-description">
+                Transforme-se em um <strong>robô de MvM</strong> correspondente à classe equipada. Libere o poder das máquinas!
+            </p>
+            <div class="command-bottom">
+                <span class="command-prompt">Comando</span>
+                <code class="command-code">!robot</code>
+                <button class="copy-btn" data-copy="!robot">⧉ Copiar</button>
+            </div>
+        </article>
 
-        <div class="command">
+        <article class="command" data-category="fun" data-search="zombie zumbi halloween morto transformação">
             <div class="command-top">
-                <span class="command-name">!taunt</span>
-                <span class="command-type">Provocação</span>
+                <div class="command-icon" aria-hidden="true">☠</div>
+                <div class="command-title">
+                    <div class="command-name">!zombie</div>
+                    <div class="command-category">Halloween • Undead</div>
+                </div>
+                <div class="command-index">09</div>
             </div>
-            <p>Abre o menu de provocações para escolher uma taunt e comemorar, provocar ou simplesmente se divertir.</p>
-            <span class="example">!taunt</span>
-        </div>
+            <p class="command-description">
+                Transforme-se em um <strong>zumbi</strong> baseado na classe equipada. Um pesadelo ambulante para seus adversários.
+            </p>
+            <div class="command-bottom">
+                <span class="command-prompt">Comando</span>
+                <code class="command-code">!zombie</code>
+                <button class="copy-btn" data-copy="!zombie">⧉ Copiar</button>
+            </div>
+        </article>
 
-        <div class="command">
+        <article class="command" data-category="cosmetics" data-search="fashion cosméticos cosmetics loadout roupa aparência visual moda">
             <div class="command-top">
-                <span class="command-name">!ks</span>
-                <span class="command-type">Killstreak</span>
+                <div class="command-icon" aria-hidden="true">✦</div>
+                <div class="command-title">
+                    <div class="command-name">!fashion</div>
+                    <div class="command-category">Cosmetics • Loadout</div>
+                </div>
+                <div class="command-index">10</div>
             </div>
-            <p>Define a quantidade de Killstreak exibida na sua arma. Escolha um número entre 0 e 100 para personalizar seu contador.</p>
-            <span class="example">!ks 45</span>
-        </div>
+            <p class="command-description">
+                Abra o arsenal da moda e escolha <strong>loadouts com cosméticos</strong>. Estilo também é uma arma, mercenário.
+            </p>
+            <div class="command-bottom">
+                <span class="command-prompt">Comando</span>
+                <code class="command-code">!fashion</code>
+                <button class="copy-btn" data-copy="!fashion">⧉ Copiar</button>
+            </div>
+        </article>
 
-        <div class="command">
+        <article class="command" data-category="fun" data-search="rtd roll the dice dados aleatório efeito sorte azar caos">
             <div class="command-top">
-                <span class="command-name">!nextmap</span>
-                <span class="command-type">Mapas</span>
+                <div class="command-icon" aria-hidden="true">?</div>
+                <div class="command-title">
+                    <div class="command-name">!rtd</div>
+                    <div class="command-category">Random • Roll The Dice</div>
+                </div>
+                <div class="command-index">11</div>
             </div>
-            <p>Confira qual mapa foi escolhido pela votação e está programado para ser o próximo do servidor.</p>
-            <span class="example">!nextmap</span>
+            <p class="command-description">
+                Jogue os dados e receba um <strong>efeito aleatório</strong>. Sorte, azar ou puro caos? A Mann Co. não se responsabiliza pelos resultados.
+            </p>
+            <div class="command-bottom">
+                <span class="command-prompt">Comando</span>
+                <code class="command-code">!rtd</code>
+                <button class="copy-btn" data-copy="!rtd">⧉ Copiar</button>
+            </div>
+        </article>
+
+        <article class="command" data-category="fun" data-search="taunt provocação provocacao animação animacao dança">
+            <div class="command-top">
+                <div class="command-icon" aria-hidden="true">♫</div>
+                <div class="command-title">
+                    <div class="command-name">!taunt</div>
+                    <div class="command-category">Taunts • Celebration</div>
+                </div>
+                <div class="command-index">12</div>
+            </div>
+            <p class="command-description">
+                Acesse o menu de <strong>provocações</strong> para celebrar vitórias, provocar rivais ou simplesmente fazer graça durante a partida.
+            </p>
+            <div class="command-bottom">
+                <span class="command-prompt">Comando</span>
+                <code class="command-code">!taunt</code>
+                <button class="copy-btn" data-copy="!taunt">⧉ Copiar</button>
+            </div>
+        </article>
+
+        <article class="command" data-category="combat" data-search="ks killstreak sequência sequencia eliminações contador arma">
+            <div class="command-top">
+                <div class="command-icon" aria-hidden="true">★</div>
+                <div class="command-title">
+                    <div class="command-name">!ks</div>
+                    <div class="command-category">Killstreak • Counter</div>
+                </div>
+                <div class="command-index">13</div>
+            </div>
+            <p class="command-description">
+                Personalize o contador de <strong>Killstreak</strong> da sua arma. Defina um valor de 0 a 100 e ostente sua sequência.
+            </p>
+            <div class="command-bottom">
+                <span class="command-prompt">Exemplo</span>
+                <code class="command-code">!ks 45</code>
+                <button class="copy-btn" data-copy="!ks 45">⧉ Copiar</button>
+            </div>
+        </article>
+
+        <article class="command" data-category="maps" data-search="nextmap próximo proximo mapa votação vencedor">
+            <div class="command-top">
+                <div class="command-icon" aria-hidden="true">➜</div>
+                <div class="command-title">
+                    <div class="command-name">!nextmap</div>
+                    <div class="command-category">Map Control • Rotation</div>
+                </div>
+                <div class="command-index">14</div>
+            </div>
+            <p class="command-description">
+                Descubra qual mapa venceu a votação e está programado para ser a <strong>próxima batalha</strong> do servidor.
+            </p>
+            <div class="command-bottom">
+                <span class="command-prompt">Comando</span>
+                <code class="command-code">!nextmap</code>
+                <button class="copy-btn" data-copy="!nextmap">⧉ Copiar</button>
+            </div>
+        </article>
+
+        <!-- EMPTY STATE -->
+        <div class="no-results" id="noResults">
+            <h3>Nenhum comando encontrado!</h3>
+            <p>Esse mercenário não está nos nossos registros. Tente outra pesquisa.</p>
         </div>
 
     </div>
 
-    <div class="notice">
-        <h3>⚠️ Atenção, mercenário!</h3>
-        <p>Os comandos são destinados à diversão e às funcionalidades personalizadas do servidor. Algumas funções podem possuir restrições dependendo da situação da partida. Respeite os outros jogadores, divirta-se e aproveite o caos!</p>
-    </div>
+    <!-- FIELD INTEL -->
+    <section class="intel">
+        <div class="intel-header">
+            <span class="intel-symbol" aria-hidden="true">⚠</span>
+            <h3>Informações de Campo</h3>
+            <span class="intel-label">MANN CO. // NOTICE</span>
+        </div>
 
+        <div class="intel-body">
+            Todos os comandos foram disponibilizados para tornar as partidas mais
+            divertidas e caóticas. Algumas funções podem apresentar restrições
+            durante o combate ou depender das configurações do servidor.
+            <br>
+            <strong>Respeite seus companheiros mercenários, divirta-se e boa sorte!</strong>
+        </div>
+
+        <div class="intel-bottom">
+            <span class="intel-tag">Casual Gameplay</span>
+            <span class="intel-tag">Community Server</span>
+            <span class="intel-tag">4Fun Experience</span>
+            <span class="intel-tag">TF2 • Brasil</span>
+        </div>
+    </section>
 </main>
 
+<!-- FOOTER -->
 <footer class="footer">
+    <div class="footer-title">Zack <span>Zanni</span></div>
 
-    <h3>🔥 ZACK <span>ZANNI</span></h3>
-
-    <p>Team Fortress 2 • Casual • 4Fun • Brasil</p>
-
-    <div class="copyright">
-        FAN-MADE COMMUNITY SERVER • NÃO OFICIAL DA VALVE
+    <div class="footer-subtitle">
+        Official Community Server • Casual • 4Fun • Brasil
     </div>
 
+    <div class="footer-divider"></div>
+
+    <div class="footer-disclaimer">
+        TEAM FORTRESS 2 COMMUNITY SERVER<br>
+        NOT AFFILIATED WITH VALVE CORPORATION
+    </div>
 </footer>
+
+<button class="back-top" id="backTop" aria-label="Voltar ao topo" title="Voltar ao topo">↑</button>
+
+<!-- INTERACTIVITY -->
+<script>
+"use strict";
+
+// ── ELEMENTS ──────────────────────────────────────────────
+
+const searchInput = document.getElementById("commandSearch");
+const commands = [...document.querySelectorAll(".command")];
+const filters = [...document.querySelectorAll(".filter")];
+const commandCount = document.getElementById("commandCount");
+const noResults = document.getElementById("noResults");
+const backTop = document.getElementById("backTop");
+
+let activeFilter = "all";
+
+// ── SEARCH + CATEGORY FILTER ──────────────────────────────
+
+function filterCommands() {
+    const query = searchInput.value
+        .toLowerCase()
+        .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+    let visibleCount = 0;
+
+    commands.forEach(command => {
+        const name = command.querySelector(".command-name").textContent;
+        const description = command.querySelector(".command-description").textContent;
+        const extraSearch = command.dataset.search || "";
+
+        const searchable = `${name} ${description} ${extraSearch}`
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+
+        const matchesSearch = searchable.includes(query);
+        const matchesFilter =
+            activeFilter === "all" ||
+            command.dataset.category === activeFilter;
+
+        const visible = matchesSearch && matchesFilter;
+
+        command.hidden = !visible;
+
+        if (visible) visibleCount++;
+    });
+
+    commandCount.textContent = `${visibleCount} / ${commands.length}`;
+    noResults.style.display = visibleCount === 0 ? "block" : "none";
+}
+
+// ── FILTER BUTTONS ───────────────────────────────────────
+
+filters.forEach(button => {
+    button.addEventListener("click", () => {
+        filters.forEach(filter => {
+            filter.classList.remove("active");
+            filter.setAttribute("aria-pressed", "false");
+        });
+
+        button.classList.add("active");
+        button.setAttribute("aria-pressed", "true");
+
+        activeFilter = button.dataset.filter;
+        filterCommands();
+    });
+});
+
+// ── SEARCH INPUT ────────────────────────────────────────
+
+searchInput.addEventListener("input", filterCommands);
+
+// ── CTRL / CMD + F ─────────────────────────────────────
+
+document.addEventListener("keydown", event => {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "f") {
+        event.preventDefault();
+        searchInput.focus();
+        searchInput.select();
+    }
+
+    if (event.key === "Escape" && document.activeElement === searchInput) {
+        searchInput.value = "";
+        searchInput.blur();
+        filterCommands();
+    }
+});
+
+// ── COPY COMMANDS ──────────────────────────────────────
+
+document.querySelectorAll(".copy-btn").forEach(button => {
+    button.addEventListener("click", async () => {
+        const command = button.dataset.copy;
+        const originalText = "⧉ Copiar";
+
+        try {
+            await navigator.clipboard.writeText(command);
+
+            button.textContent = "✓ COPIADO";
+            button.classList.add("copied");
+            button.setAttribute("aria-label", `Comando ${command} copiado`);
+
+            window.setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove("copied");
+                button.removeAttribute("aria-label");
+            }, 1600);
+
+        } catch (error) {
+            // Fallback for browsers that block clipboard access.
+            const temporary = document.createElement("textarea");
+            temporary.value = command;
+            temporary.style.position = "fixed";
+            temporary.style.opacity = "0";
+
+            document.body.appendChild(temporary);
+            temporary.select();
+
+            const success = document.execCommand("copy");
+            temporary.remove();
+
+            button.textContent = success ? "✓ COPIADO" : "COPIE MANUALMENTE";
+            button.classList.toggle("copied", success);
+
+            window.setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove("copied");
+            }, 1600);
+        }
+    });
+});
+
+// ── BACK TO TOP ────────────────────────────────────────
+
+window.addEventListener("scroll", () => {
+    backTop.classList.toggle("visible", window.scrollY > 450);
+}, { passive: true });
+
+backTop.addEventListener("click", () => {
+    window.scrollTo({
+        top: 0,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "auto"
+            : "smooth"
+    });
+});
+
+// ── INITIALIZATION ─────────────────────────────────────
+
+filterCommands();
+</script>
 
 </body>
 </html>
+```
